@@ -14,45 +14,12 @@ galleryContainer.insertAdjacentHTML('beforeend', cardsGallery);
 function createGalleryCardsItem(galleryItems) {
     return galleryItems.map(({ preview, original, description }) => {
         return `
-    <div class="gallery__item">
-  <a class="gallery__link" href="${original}">
-    <img
-      class="gallery__image"
-      src="${preview}"
-      data-source="${original}"
-      alt="${description}"
-    />
-  </a>
-</div>
+    <li><a class="gallery__item" href="${original}">
+  <img class="gallery__image" src="${preview}" alt="${description}" />
+</a></li>
     `
     }).join('');
 }
+const lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: 'alt' });
 
-galleryContainer.addEventListener('click', onGalleryItemClick);
-
-function onGalleryItemClick(evt) {
-    if (evt.target.nodeName !== 'IMG') {
-        return;
-  }
-    evt.preventDefault();
-    onModalOpen(evt);
-    console.log(evt.target.dataset.source);
-}
-
-function onModalOpen(evt) {
-  const instance = basicLightbox.create(`
-    <img src="${evt.target.dataset.source}" width="1280" height="960">
-`);
-  instance.show();
-  galleryContainer.addEventListener('keydown', onEscapePress);
-
-  function onEscapePress(evt) {
-    const ESC_KEY_CODE = 'Escape';
-    const isEscape = evt.code === ESC_KEY_CODE;
-
-    if (isEscape) {
-      instance.close();
-      galleryContainer.removeEventListener('keydown', onEscapePress);
-    }
-  }
-}
+console.log(lightbox);
